@@ -1,4 +1,5 @@
 import './@config/styles/globals.css'
+import '@vime/core/themes/default.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'

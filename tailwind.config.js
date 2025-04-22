@@ -12,6 +12,12 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        footer: '680px',
+      },
+      backgroundImage: {
+        default: 'url(/background.png)',
+      },
       fontFamily: {
         sans: 'Plus Jakarta Sans',
       },
