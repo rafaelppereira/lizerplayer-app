@@ -7,10 +7,10 @@ import { VideoPlayer } from '@/components/video-player'
 
 export function Home() {
   return (
-    <main className="bg-default flex min-h-screen flex-col bg-cover bg-center bg-no-repeat">
+    <main className="flex min-h-screen flex-col bg-default bg-cover bg-center bg-no-repeat">
       <Header />
 
-      <main className="flex flex-1 transition-all">
+      <main className="flex flex-1">
         <VideoPlayer />
 
         <Sidebar />

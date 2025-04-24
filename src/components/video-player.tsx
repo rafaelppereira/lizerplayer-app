@@ -1,36 +1,46 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Player, Ui, Youtube } from '@vime/react'
 import { FileIcon, ImageIcon } from 'lucide-react'
 import { BsFillLightningChargeFill } from 'react-icons/bs'
 import { FaDiscord, FaGithub, FaLinkedin } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 
+import { lessons } from '@/@config/utils/lessons'
+
+import { SupplementaryMaterialDialog } from './supplementary-material-dialog'
 import { Button } from './ui/button'
 
 export function VideoPlayer() {
+  const { slug } = useParams()
+
+  const findLesson = lessons.find((lesson) => lesson.slug === slug)
+
+  if (!findLesson) {
+    return <Navigate to="/" />
+  }
+
   return (
     <div className="flex-1 transition-all">
-      <div className="flex justify-center bg-zinc-900 backdrop-blur-sm">
-        <div className="w-full max-w-7xl">
-          <Player controls>
-            <Youtube videoId="oB1MOMGDPpE" />
-            <Ui />
-          </Player>
+      <div className="flex justify-center bg-black backdrop-blur-sm">
+        <div className="aspect-video max-h-[70vh] w-full max-w-7xl">
+          <iframe
+            width="100%"
+            height="100%"
+            allowFullScreen
+            title="YouTube video player"
+            referrerPolicy="strict-origin-when-cross-origin"
+            src={`https://www.youtube.com/embed/${findLesson.sourceVideoId}?si=2d1_oqFUH-QMg7wS&rel=0&controls=1&modestbranding=1&showinfo=0`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          />
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl flex-col p-8 md:flex-row">
+      <div className="mx-auto max-w-7xl flex-col p-4 md:flex-row lg:p-8">
         <div className="flex flex-col gap-4 md:items-start xl:flex-row xl:gap-14">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">
-              Aula 01 - Criando o projeto e realizando o setup inicial
-            </h1>
-            <p className="mt-4 leading-relaxed text-zinc-200">
-              Nessa aula vamos dar início ao projeto criando a estrutura base da
-              aplicação utilizando ReactJS, Vite e TailwindCSS. Vamos também
-              realizar o setup do nosso projeto no GraphCMS criando as entidades
-              da aplicação e integrando a API GraphQL gerada pela plataforma no
-              nosso front-end utilizando Apollo Client.
+            <h1 className="text-2xl font-bold">{findLesson.title}</h1>
+            <p className="mt-4 overflow-auto whitespace-normal leading-relaxed text-zinc-200">
+              {findLesson.description.slice(0, 300)}{' '}
+              {findLesson.description.length > 300 && '...'}
             </p>
 
             <div className="mt-6 flex items-center gap-10">
@@ -82,62 +92,59 @@ export function VideoPlayer() {
 
           <div className="flex w-full flex-col items-center justify-center gap-4 xl:w-auto">
             <Button
-              asChild
+              disabled
               type="button"
               className="h-14 w-full border-b-4 border-b-white font-semibold uppercase lg:h-12"
               title="Clique para acessar nossa comunidade do Discord"
             >
-              <Link to="" target="_blank">
-                <FaDiscord className="mr-2 size-5" />
-                Comunidade Discord
-              </Link>
+              <FaDiscord className="mr-2 size-5" />
+              Comunidade Discord
             </Button>
 
             <Button
-              asChild
+              disabled
               type="button"
               variant="outline"
               className="h-14 w-full font-semibold uppercase lg:h-12"
               title="Clique para acessar o mapa do desafio"
             >
-              <Link to="" target="_blank">
-                <BsFillLightningChargeFill className="mr-2 size-5" />
-                Acesse o desafio
-              </Link>
+              <BsFillLightningChargeFill className="mr-2 size-5" />
+              Acesse o desafio
             </Button>
           </div>
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-8 lg:mt-20 xl:grid-cols-2">
-          <Link
-            to="/"
-            title="Clique para acessar o material complementar"
-            className="flex w-full items-stretch gap-6 overflow-hidden rounded bg-zinc-900 transition-all hover:brightness-75"
-          >
-            <div className="flex h-full items-center bg-primary p-6">
-              <FileIcon className="size-10" />
-            </div>
+          <SupplementaryMaterialDialog description={findLesson.description}>
+            <div className="flex w-full cursor-pointer items-stretch gap-6 overflow-hidden rounded-xl bg-zinc-900 transition-all hover:brightness-75">
+              <div className="flex h-full items-center bg-primary p-6">
+                <FileIcon className="size-10" />
+              </div>
 
-            <div className="py-6 leading-relaxed">
-              <h2 className="text-xl font-bold">Material complementar</h2>
-              <p className="mt-2 text-sm font-medium text-zinc-300">
-                Acesse o material complementar para acelerar o seu
-                desenvolvimento
-              </p>
+              <div className="py-6 pr-6 leading-relaxed">
+                <h2 className="text-lg font-bold lg:text-xl">
+                  Material complementar
+                </h2>
+                <p className="mt-2 text-sm font-medium text-zinc-300">
+                  Acesse o material complementar para o seu desenvolvimento
+                </p>
+              </div>
             </div>
-          </Link>
+          </SupplementaryMaterialDialog>
 
           <Link
-            to="/"
+            to=""
             title="Clique para acessar os wallpapers exclusivos da RP Desenvolvimentos"
-            className="flex w-full items-stretch gap-6 overflow-hidden rounded bg-zinc-900 transition-all hover:brightness-75"
+            className="flex w-full cursor-not-allowed items-stretch gap-6 overflow-hidden rounded-xl bg-zinc-900 opacity-75 transition-all"
           >
             <div className="flex h-full items-center bg-primary p-6">
               <ImageIcon className="size-10" />
             </div>
 
-            <div className="py-6 leading-relaxed">
-              <h2 className="text-xl font-bold">Wallpapers exclusivos</h2>
+            <div className="py-6 pr-6 leading-relaxed">
+              <h2 className="text-lg font-bold lg:text-xl">
+                Wallpapers exclusivos
+              </h2>
               <p className="mt-2 text-sm font-medium text-zinc-300">
                 Baixe wallpapers exclusivos da RP e personalize a sua máquina
               </p>
@@ -147,8 +154,8 @@ export function VideoPlayer() {
       </div>
 
       <footer className="bg-zinc-900">
-        <div className="footer:flex-row flex flex-col items-center justify-between gap-2 px-8 py-4">
-          <div className="footer:flex-row flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center justify-between gap-2 px-8 py-4 footer:flex-row">
+          <div className="flex flex-col items-center gap-4 footer:flex-row">
             <Link to="/" className="h-6" title="Clique para ir ao início">
               <img
                 src="/logo.svg"

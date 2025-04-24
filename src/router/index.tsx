@@ -6,7 +6,11 @@ import { Home } from '@/pages/(home)/page'
 
 const router: any = createBrowserRouter([
   {
-    path: '/',
+    path: '/lessons',
+    element: <Home />,
+  },
+  {
+    path: '/lessons/:slug',
     element: <Home />,
   },
 ])

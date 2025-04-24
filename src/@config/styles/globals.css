@@ -79,3 +79,11 @@
   ::selection {
     @apply bg-primary text-white
   }
+
+  .ytp-chrome-top, .ytp-show-cards-title {
+    display: none !important;
+  }
+
+  [data-sessionlink="feature=player-button"] {
+    display: none !important;
+  }

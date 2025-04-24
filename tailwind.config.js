@@ -15,6 +15,9 @@ module.exports = {
       screens: {
         footer: '680px',
       },
+      gridTemplateColumns: {
+        app: '1fr minmax(18rem, 24rem)',
+      },
       backgroundImage: {
         default: 'url(/background.png)',
       },
